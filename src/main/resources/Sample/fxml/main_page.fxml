@@ -11,4 +11,10 @@
             fx:controller="Sample.View.MainPage"
             prefHeight="400.0" prefWidth="600.0">
 
+    <center>
+        <VBox>
+            <Button/>
+        </VBox>
+    </center>
+
 </BorderPane>
