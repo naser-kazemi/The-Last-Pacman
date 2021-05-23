@@ -17,7 +17,7 @@ public class SignUpPage extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         mainStage = stage;
-        URL signUpPageAddress = getClass().getResource("/Sample/fxml/sign_up_page.fxmlً");
+        URL signUpPageAddress = getClass().getResource("/Sample/fxml/sign_up_page.fxml");
         Parent signUpPagePane = FXMLLoader.load(Objects.requireNonNull(signUpPageAddress));
         Scene scene = new Scene(signUpPagePane);
         stage.setScene(scene);
@@ -25,6 +25,12 @@ public class SignUpPage extends Application {
     }
 
     public void goBack(MouseEvent mouseEvent) throws Exception {
+        System.out.println(mouseEvent.getSource());
+        new LoginPage().start(mainStage);
+    }
+
+
+    public void goToWelcomePage(MouseEvent mouseEvent) throws Exception {
         System.out.println(mouseEvent.getSource());
         new WelcomePage().start(mainStage);
     }

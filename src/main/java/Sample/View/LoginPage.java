@@ -26,6 +26,11 @@ public class LoginPage extends Application {
     }
 
 
+    public void goToSignUpPage(MouseEvent mouseEvent) throws Exception {
+        System.out.println(mouseEvent.getSource());
+        new SignUpPage().start(mainStage);
+    }
+
     public void goBack(MouseEvent mouseEvent) throws Exception {
         System.out.println(mouseEvent.getSource());
         new WelcomePage().start(mainStage);

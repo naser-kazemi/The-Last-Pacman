@@ -6,9 +6,27 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="Sample.View.SignUpPage"
             prefHeight="400.0" prefWidth="600.0">
 
-</AnchorPane>
+    <top>
+        <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" text="Sign Up Page">
+                <font>
+                    <Font size="22"/>
+                </font>
+            </Label>
+        </HBox>
+    </top>
+
+    <bottom>
+        <HBox alignment="CENTER">
+            <Button text="Back" onMouseClicked="#goBack"/>
+            <Button text="Go to Welcome Page" onMouseClicked="#goToWelcomePage"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

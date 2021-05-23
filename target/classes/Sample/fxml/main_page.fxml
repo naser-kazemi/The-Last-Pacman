@@ -13,7 +13,9 @@
 
     <center>
         <VBox>
-            <Button/>
+            <Button text="New Game" onMouseClicked="#newGame"/>
+            <Button text="Continue" onMouseClicked="#continueLastGame"/>
+            <Button text="Back" onMouseClicked="#goBack"/>
         </VBox>
     </center>
 

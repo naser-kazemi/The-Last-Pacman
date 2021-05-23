@@ -12,7 +12,7 @@
             prefHeight="400.0" prefWidth="600.0">
 
     <center>
-        <VBox>
+        <VBox alignment="CENTER">
             <Button text="New Game" onMouseClicked="#newGame"/>
             <Button text="Continue" onMouseClicked="#continueLastGame"/>
             <Button text="Back" onMouseClicked="#goBack"/>
