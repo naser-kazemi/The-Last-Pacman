@@ -10,26 +10,22 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.Objects;
 
-public class LoginPage extends Application {
+public class SignUpPage extends Application {
 
     private static Stage mainStage;
-
 
     @Override
     public void start(Stage stage) throws Exception {
         mainStage = stage;
-        URL loginPageAddress = getClass().getResource("/Sample/fxml/login_page.fxml");
-        Parent loginPagePane = FXMLLoader.load(Objects.requireNonNull(loginPageAddress));
-        Scene scene = new Scene(loginPagePane);
+        URL signUpPageAddress = getClass().getResource("/Sample/fxml/sign_up_page.fxmlً");
+        Parent signUpPagePane = FXMLLoader.load(Objects.requireNonNull(signUpPageAddress));
+        Scene scene = new Scene(signUpPagePane);
         stage.setScene(scene);
         stage.show();
     }
-
 
     public void goBack(MouseEvent mouseEvent) throws Exception {
         System.out.println(mouseEvent.getSource());
         new WelcomePage().start(mainStage);
     }
-
-
 }

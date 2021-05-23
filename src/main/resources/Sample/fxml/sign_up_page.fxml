@@ -6,15 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
+<AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Sample.View.MainPage"
+            fx:controller="Sample.View.SignUpPage"
             prefHeight="400.0" prefWidth="600.0">
 
-    <center>
-        <VBox>
-            <Button/>
-        </VBox>
-    </center>
-
-</BorderPane>
+</AnchorPane>

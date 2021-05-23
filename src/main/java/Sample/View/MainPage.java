@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -22,4 +23,19 @@ public class MainPage extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void newGame(MouseEvent mouseEvent) {
+        System.out.println(mouseEvent.getSource());
+    }
+
+    public void continueLastGame(MouseEvent mouseEvent) {
+        System.out.println(mouseEvent.getSource());
+    }
+
+    public void goBack(MouseEvent mouseEvent) throws Exception {
+        System.out.println(mouseEvent.getSource());
+        new WelcomePage().start(mainStage);
+    }
+
+
 }
