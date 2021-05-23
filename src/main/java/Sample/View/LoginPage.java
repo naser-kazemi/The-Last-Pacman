@@ -1,9 +1,11 @@
 package Sample.View;
 
+import Sample.Model.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -12,8 +14,23 @@ import java.util.Objects;
 
 public class LoginPage extends Application {
 
+    protected static LoginPage instance = new LoginPage();
     private static Stage mainStage;
 
+
+
+    protected User currentUser;
+    public TextField username;
+    public TextField password;
+
+
+    public static LoginPage getInstance() {
+        return instance;
+    }
+
+    public User getCurrentUser() {
+        return instance.currentUser;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -37,4 +54,8 @@ public class LoginPage extends Application {
     }
 
 
+
+    public static Stage getMainStage() {
+        return mainStage;
+    }
 }

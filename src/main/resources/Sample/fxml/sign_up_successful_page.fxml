@@ -5,17 +5,22 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Sample.View.MainPage"
+            fx:controller="Sample.View.SignUpSuccessfulPage"
             prefHeight="400.0" prefWidth="600.0">
 
     <center>
         <VBox alignment="CENTER">
-            <Button text="New Game" onMouseClicked="#newGame"/>
-            <Button text="Continue" onMouseClicked="#continueLastGame"/>
-            <Button text="Back" onMouseClicked="#goBack"/>
+            <Label text="Sign Up Successful!">
+                <font>
+                    <Font size="22"/>
+                </font>
+            </Label>
+            <Button text="Go to Login Page" onMouseClicked="#goBack"/>
         </VBox>
     </center>
 

@@ -24,15 +24,21 @@
     </top>
 
     <center>
-        <VBox alignment="CENTER" prefHeight="316.0" prefWidth="473.0" BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER">
             <Label text="Please enter your username and password"/>
+            <HBox alignment="CENTER">
+                <Label text="Username"/>
+                <TextField fx:id="username"/>
+            </HBox>
+            <HBox alignment="CENTER">
+                <Label text="Password"/>
+                <TextField fx:id="password"/>
+            </HBox>
+            <HBox alignment="CENTER">
+                <Label text="Don't have an account?"/>
+                <Button text="Sign Up" onMouseClicked="#goToSignUpPage"/>
+            </HBox>
         </VBox>
-
-        <HBox alignment="CENTER">
-            <Label text="Don't have an account?"/>
-            <Button text="Sign Up" onMouseClicked="#goToSignUpPage"/>
-        </HBox>
-
     </center>
 
     <bottom>
