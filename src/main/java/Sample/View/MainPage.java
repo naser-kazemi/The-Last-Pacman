@@ -1,5 +1,6 @@
 package Sample.View;
 
+import Sample.Model.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,15 +14,17 @@ import java.util.Objects;
 public class MainPage extends Application {
 
     private static Stage mainStage;
+    private static User currentUser;
 
     @Override
     public void start(Stage stage) throws Exception {
         mainStage = stage;
         URL mainPageAddress = getClass().getResource("/Sample/fxml/main_page.fxml");
-        Parent mainPagepane = FXMLLoader.load(Objects.requireNonNull(mainPageAddress));
-        Scene scene = new Scene(mainPagepane);
+        Parent mainPagePane = FXMLLoader.load(Objects.requireNonNull(mainPageAddress));
+        Scene scene = new Scene(mainPagePane);
         stage.setScene(scene);
         stage.show();
+        System.out.println(LoginPage.getCurrentUser().getUsername() + "\t" + LoginPage.getCurrentUser().getPassword());
     }
 
     public void newGame(MouseEvent mouseEvent) {
@@ -34,8 +37,15 @@ public class MainPage extends Application {
 
     public void goBack(MouseEvent mouseEvent) throws Exception {
         System.out.println(mouseEvent.getSource());
-        new WelcomePage().start(mainStage);
+        new LoginPage().start(mainStage);
     }
 
 
+    public static void setCurrentUser(User currentUser) {
+        MainPage.currentUser = currentUser;
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
 }

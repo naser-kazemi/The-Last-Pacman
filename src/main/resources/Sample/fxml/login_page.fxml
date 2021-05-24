@@ -28,12 +28,16 @@
             <Label text="Please enter your username and password"/>
             <HBox alignment="CENTER">
                 <Label text="Username"/>
-                <TextField fx:id="username"/>
+                <children>
+                    <TextField fx:id="username"/>
+                </children>
             </HBox>
             <HBox alignment="CENTER">
                 <Label text="Password"/>
                 <TextField fx:id="password"/>
             </HBox>
+            <Button text="Login" onMouseClicked="#login"/>
+            <Text fx:id="result"/>
             <HBox alignment="CENTER">
                 <Label text="Don't have an account?"/>
                 <Button text="Sign Up" onMouseClicked="#goToSignUpPage"/>
@@ -43,7 +47,7 @@
 
     <bottom>
         <HBox alignment="CENTER">
-            <Button text="Back" onMouseClicked="#goBack"/>
+            <Button text="Back" fx:id="backLogout" onMouseClicked="#goBackLogout"/>
         </HBox>
     </bottom>
 

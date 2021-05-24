@@ -1,5 +1,9 @@
 package Sample.Model;
 
+import com.google.gson.Gson;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class User {
@@ -17,6 +21,13 @@ public class User {
         this.password = password;
         users.add(this);
         usernames.add(username);
+        try {
+            FileWriter jsonWriter = new FileWriter("src/main/resources/Sample/Data/Users.json");
+            jsonWriter.write(new Gson().toJson(users));
+            jsonWriter.close();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -40,5 +51,10 @@ public class User {
 
     public static ArrayList<String> getUsernames() {
         return usernames;
+    }
+
+    public static void setUsers(ArrayList<User> users, ArrayList<String> usernames) {
+        User.users.addAll(users);
+        User.usernames.addAll(usernames);
     }
 }

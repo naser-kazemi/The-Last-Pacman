@@ -16,6 +16,7 @@ public class WelcomePage extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        stage.setTitle("Pac-Man");
         mainStage = stage;
         URL welcomePageAddress = getClass().getResource("/Sample/fxml/welcome_page.fxml");
         Parent root = FXMLLoader.load(Objects.requireNonNull(welcomePageAddress));
@@ -45,4 +46,6 @@ public class WelcomePage extends Application {
         System.out.println(mouseEvent.getSource());
         new MainPage().start(mainStage);
     }
+
+
 }

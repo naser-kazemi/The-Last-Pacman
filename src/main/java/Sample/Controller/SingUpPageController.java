@@ -1,9 +1,9 @@
 package Sample.Controller;
 
 import Sample.Model.User;
-import Sample.View.LoginPage;
 import Sample.View.SignUpPage;
 import Sample.View.SignUpSuccessfulPage;
+
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -33,14 +33,6 @@ public class SingUpPageController {
         }
 
         public String handle(String username, String password, String confirmPassword) {
-            return null;
-        }
-
-        public String handle(String usernameOrPassword) {
-            return null;
-        }
-
-        public String handle(String date, String time) {
             return null;
         }
 
@@ -81,7 +73,6 @@ public class SingUpPageController {
             else
                 return "Invalid Password";
         }
-
     }
 
 
@@ -96,11 +87,6 @@ public class SingUpPageController {
                     return "Sign Up Successful!";
             else
                 return "Passwords do not match!";
-        }
-
-        @Override
-        public String handle(String usernameOrPassword) {
-            return null;
         }
     }
 
@@ -121,12 +107,6 @@ public class SingUpPageController {
             else
                 return "Username already exists!";
         }
-
-        @Override
-        public String handle(String usernameOrPassword) {
-            return null;
-        }
-
     }
 
 

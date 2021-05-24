@@ -5,13 +5,13 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="Sample.View.LoginPage"
             prefHeight="400.0" prefWidth="600.0">
-
 
     <top>
         <HBox alignment="CENTER" BorderPane.alignment="CENTER">
@@ -25,31 +25,22 @@
 
     <center>
         <VBox alignment="CENTER">
-            <Label text="Please enter your username and password"/>
             <HBox alignment="CENTER">
-                <Label text="Username"/>
-                <children>
-                    <TextField fx:id="username"/>
-                </children>
+                <Label text="Username: "/>
+                <Text fx:id="usernameText"/>
             </HBox>
             <HBox alignment="CENTER">
-                <Label text="Password"/>
-                <TextField fx:id="password"/>
+                <Text text="Password: "/>
+                <Text fx:id="passwordText"/>
             </HBox>
-            <Button text="Login" onMouseClicked="#login"/>
-            <Text fx:id="result"/>
-            <HBox alignment="CENTER">
-                <Label text="Don't have an account?"/>
-                <Button text="Sign Up" onMouseClicked="#goToSignUpPage"/>
-            </HBox>
+            <Button fx:id="button" text="show" onMouseClicked="#show"/>
         </VBox>
     </center>
 
     <bottom>
         <HBox alignment="CENTER">
-            <Button text="Back" fx:id="backLogout" onMouseClicked="#goBackLogout"/>
+            <Button text="Logout" fx:id="backLogout" onMouseClicked="#goBackLogout"/>
         </HBox>
     </bottom>
-
 
 </BorderPane>
