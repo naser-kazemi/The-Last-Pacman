@@ -4,6 +4,7 @@ module Pacman {
     requires gson;
     requires java.sql;
 
+
     opens Sample.View to javafx.fxml;
     opens Sample.Model;
     exports Sample.View;

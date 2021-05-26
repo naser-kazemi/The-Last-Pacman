@@ -12,6 +12,7 @@ public class User {
     protected static ArrayList<String> usernames = new ArrayList<>();
 
 
+    protected ArrayList<Map> maps = new ArrayList<>();
     protected String username;
     protected String password;
 
