@@ -295,13 +295,66 @@ public class Pacman {
 
 
 
+    // ******Hard Mode******
     public void moveGhosts() {
 
     }
 
 
-    public Point2D moveThisGhost(Point2D location, Point2D velocity) {
+    public void moveInTheSameColumnTowardsPacman(Point2D location, Point2D velocity) {
         Random random = new Random();
+        if (location.getX() > pacmanLocation.getX()) {
+            velocity = setVelocity(Direction.UP);
+        } else {
+            velocity = setVelocity(Direction.DOWN);
+        }
+        Point2D potentialLocation = location.add(velocity);
+        potentialLocation = adjustColumnLocation(potentialLocation);
+        int column = (int) potentialLocation.getY();
+        int row = (int) location.getX();
+        while (grid[row][column] == Cell.WALL) {
+            int randomNum = random.nextInt(4);
+            Direction direction = intToDirection(randomNum);
+            velocity = setVelocity(direction);
+            potentialLocation = location.add(velocity);
+        }
+        location = potentialLocation;
+    }
+
+
+    public void moveInTheSameRowTowardsPacman(Point2D location, Point2D velocity) {
+
+    }
+
+
+    public Direction intToDirection(int x){
+        if (x == 0){
+            return Direction.LEFT;
+        }
+        else if (x == 1){
+            return Direction.RIGHT;
+        }
+        else if(x == 2){
+            return Direction.UP;
+        }
+        else{
+            return Direction.DOWN;
+        }
+    }
+
+
+    public void moveTowardsPacman(Point2D location, Point2D velocity) {
+        if (location.getY() == pacmanLocation.getY())
+            moveInTheSameColumnTowardsPacman(location, velocity);
+        else if (location.getX() == pacmanLocation.getX())
+            moveInTheSameRowTowardsPacman(location, velocity);
+    }
+
+
+    public Point2D moveThisGhost(Point2D location, Point2D velocity) {
+        if (!energyBombActive) {
+
+        }
 
         return new Point2D(0, 0);
     }
