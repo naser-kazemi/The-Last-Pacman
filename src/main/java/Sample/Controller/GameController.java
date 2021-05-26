@@ -69,4 +69,10 @@ public class GameController implements EventHandler<KeyEvent> {
     public static int getEnergyBombCounter() {
         return EnergyBombCounter;
     }
+
+
+    //TODO set counter
+    public static void setEnergyBombCounter() {
+        EnergyBombCounter = 25;
+    }
 }
