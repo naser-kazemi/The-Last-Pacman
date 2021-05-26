@@ -477,12 +477,19 @@ public class Pacman {
         }
     }
 
-    public void eatGhost() {
-        if (pacmanLocation.equals(ghost1Location)) {
-            returnThisGhostToInitialLocation(Cell.GHOST_1_HOME, ghost1Location, ghost1Velocity);
+    public void eatThisGhost(Cell ghost, Point2D ghostLocation, Point2D ghostVelocity) {
+        if (pacmanLocation.equals(ghostLocation)) {
+            returnThisGhostToInitialLocation(ghost, ghostLocation, ghostVelocity);
             eatenGhostCount++;
             score += 200 * eatenGhostCount;
         }
+    }
+
+    public void eatGhosts() {
+        eatThisGhost(Cell.GHOST_1_HOME, ghost1Location, ghost1Velocity);
+        eatThisGhost(Cell.GHOST_2_HOME, ghost2Location, ghost2Velocity);
+        eatThisGhost(Cell.GHOST_3_HOME, ghost3Location, ghost3Velocity);
+        eatThisGhost(Cell.GHOST_4_HOME, ghost4Location, ghost4Velocity);
     }
 
     //TODO eating and resetting ghosts
@@ -490,7 +497,7 @@ public class Pacman {
         this.movePacman(direction);
         eatElement((int) pacmanLocation.getX(), (int) pacmanLocation.getY());
         if (energyBombActive)
-            eatGhost();
+            eatGhosts();
     }
 
 
