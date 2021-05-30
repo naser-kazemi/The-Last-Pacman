@@ -3,12 +3,16 @@ module Pacman {
     requires javafx.fxml;
     requires gson;
     requires java.sql;
+    requires javafx.media;
 
 
-    opens Sample.View to javafx.fxml;
-    opens Sample.Model;
-    exports Sample.View;
-    exports Sample.Model;
+
+    opens sample.view to javafx.fxml;
+    opens sample.controller to javafx.fxml;
+    opens sample.model;
+    exports sample.view;
+    exports sample.model;
+    exports sample.controller;
 
 
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import sample.view.PacmanView?>
+
+<BorderPane fx:controller="sample.controller.GameController" style="-fx-background-color: Black;" xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <BorderPane prefHeight="35" style="-fx-background-color: #0B5091; -fx-padding: 10px, 5px, 10px, 5px" >
+            <left><Label fx:id="scoreLabel" style="-fx-font-size: 150%; -fx-text-fill: white" /></left>
+            <center><Label fx:id="gameOverLabel" style="-fx-font-size: 150%; -fx-text-fill: white" /></center>
+            <right><Label fx:id="liveLabel" style="-fx-font-size: 150%; -fx-text-fill: white"/></right>
+        </BorderPane>
+    </top>
+
+    <center>
+        <PacmanView fx:id="pacmanView" rowCount="21" columnCount="19" />
+    </center>
+
+    <bottom>
+        <HBox prefHeight="35" style="-fx-padding: 10px, 5px, 10px, 5px; -fx-background-color: #F3B61D">
+            <Label style="-fx-font-size: 140%; -fx-text-fill: white"
+                   text="Move: arrow keys / New game: G" />
+            <Button text="Return to Main Page" onMouseClicked="#returnToMainPage"/>
+            <Button text="Restart Game" onMouseClicked="#restartGame"/>
+        </HBox>
+    </bottom>
+</BorderPane>
