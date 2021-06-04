@@ -1,5 +1,6 @@
 package sample.view;
 
+import javafx.scene.paint.Color;
 import sample.controller.SingUpPageController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,14 +21,17 @@ public class SignUpPage extends Application {
 
 
 
-    public TextField username;
-    public TextField password;
-    public TextField confirmPassword;
+    public TextField username = new TextField();
+    public TextField password = new TextField();
+    public TextField confirmPassword = new TextField();
     public Text result = new Text("");
 
 
     @Override
     public void start(Stage stage) throws Exception {
+        username.setStyle("-fx-text-inner-color: azure;");
+        password.setStyle("-fx-text-inner-color: azure;");
+        confirmPassword.setStyle("-fx-text-inner-color: azure;");
         mainStage = stage;
         URL signUpPageAddress = getClass().getResource("/Sample/fxml/sign_up_page.fxml");
         System.out.println(signUpPageAddress);
@@ -58,8 +62,10 @@ public class SignUpPage extends Application {
         String passwordString = password.getText();
         String confirmPasswordString = confirmPassword.getText();
         SingUpPageController.getInstance().signUp(usernameString, passwordString, confirmPasswordString);
-        if (!message.equals("Sign Up Successful!"))
+        if (!message.equals("Sign Up Successful!")) {
+            result.setFill(new Color(1, 0.05, 0.2, 0.7));
             result.setText(message);
+        }
     }
 
     public static void setMessage(String message) {

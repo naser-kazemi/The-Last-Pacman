@@ -9,13 +9,22 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="sample.view.MainPage"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="549.0" prefWidth="800.0" style="-fx-background-color: #261e7d;">
 
     <center>
-        <VBox alignment="CENTER">
-            <Button text="New Game" onMouseClicked="#newGame"/>
-            <Button text="Continue" onMouseClicked="#continueLastGame"/>
-            <Button text="Back" onMouseClicked="#goBack"/>
+        <VBox alignment="CENTER" spacing="20">
+            <Button text="New Game" onMouseClicked="#newGame" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Continue" onMouseClicked="#continueLastGame" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Select Map" onMouseClicked="#goToSelectMap" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Scoreboard" onMouseClicked="#goToScoreboardPage" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Account Setting" onMouseClicked="#goToAccountSetting" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Back" onMouseClicked="#goBack" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
         </VBox>
     </center>
 

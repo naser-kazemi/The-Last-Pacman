@@ -1,6 +1,8 @@
 package sample.view;
 
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import sample.controller.GameController;
 import sample.model.Pacman;
 import javafx.fxml.FXML;
@@ -9,20 +11,19 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
-
-
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 public class PacmanView extends Group {
 
-    public final static double CELL_WIDTH = 40.0;
-    private static MediaPlayer dotEatingSound;
-    private static MediaPlayer energyBombEatingSound;
+    public final static double CELL_WIDTH = 35.0;
+    public static AudioClip dotEatingSound;
+    public static AudioClip energyBombEatingSound;
+    public static AudioClip pacmanDiesSound;
+    public static AudioClip eatingGhostSound;
+    public static MediaPlayer themeSound;
 
-    @FXML
-    private int rowCount;
+    @FXML private int rowCount;
     @FXML private int columnCount;
     private ImageView[][] cellViews;
     private final Image pacmanRightImage;
@@ -43,7 +44,6 @@ public class PacmanView extends Group {
 
 
 
-    //TODO ghost images
     public PacmanView() {
         this.pacmanRightImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Sample/Images/pacmanRight.gif")));
         this.pacmanUpImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Sample/Images/pacmanUp.gif")));
@@ -57,14 +57,25 @@ public class PacmanView extends Group {
         this.wallImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Sample/Images/wall.png")));
         this.energyBombImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Sample/Images/energyBomb.png")));
         this.dotImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Sample/Images/smalldot.png")));
-//        dotEatingSound = new MediaPlayer(new Media(Paths.get("eat.mp3").toUri().toString()));
-//        energyBombEatingSound = new MediaPlayer(new Media(Paths.get("eat.mp3").toUri().toString()));
-        File file = new File("src/main/resources/Sample/sounds/eatDot.mp3");
-//        file.renameTo(new File("src/main/resources/Sample/sounds/eat.mp3"));
-        String dotEatingSoundUri = file.toURI().getPath();
-        System.out.println("/Users/nkazemi/Desktop/IntelliJ IDEA/Pacman/src/main/resources/Sample/sounds/eatDot.mp3".charAt(32));
-        System.out.println(dotEatingSoundUri);
-//        dotEatingSound = new MediaPlayer(new Media(dotEatingSoundUri));
+        File themeFile = new File("src/main/resources/Sample/sounds/theme.mp3");
+        themeSound = new MediaPlayer(new Media(themeFile.toURI().toString()));
+        themeSound.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                themeSound.seek(Duration.ZERO);
+            }
+        });
+        themeSound.setVolume(2);
+        themeSound.play();
+        File dotEatingSoundFile = new File("src/main/resources/Sample/sounds/eat.wav");
+        dotEatingSound = new AudioClip(dotEatingSoundFile.toURI().toString());
+        dotEatingSound.setVolume(2.5);
+        File pacmanDiesSoundFile = new File("src/main/resources/Sample/sounds/death.wav");
+        pacmanDiesSound = new AudioClip(pacmanDiesSoundFile.toURI().toString());
+        pacmanDiesSound.setVolume(2.5);
+        File eatingGhostSoundFile = new File("src/main/resources/Sample/sounds/eatGhost.mp3");
+        eatingGhostSound = new AudioClip(eatingGhostSoundFile.toURI().toString());
+        eatingGhostSound.setVolume(2.5);
     }
 
 
@@ -103,20 +114,6 @@ public class PacmanView extends Group {
 
     public boolean isPacmanInLocation(int row, int column, Pacman pacman) {
         return (row == (int)pacman.getLocation().getX() && column == (int)pacman.getLocation().getY());
-//                (row == (int)pacman.getLocation().getX() + 1 && column == (int)pacman.getLocation().getY()) ||
-//                (row == (int)pacman.getLocation().getX() && column == (int)pacman.getLocation().getY() + 1) ||
-//                (row == (int)pacman.getLocation().getX() + 1 && column == (int)pacman.getLocation().getY() + 1);
-//        if ((row == (int)pacman.getLocation().getX() && column == (int)pacman.getLocation().getY()))
-//            return true;
-//        else if ((row == (int)pacman.getLocation().getX() + 1 && column == (int)pacman.getLocation().getY()))
-//            return true;
-//        else if ((row == (int)pacman.getLocation().getX() && column == (int)pacman.getLocation().getY() + 1))
-//            return true;
-//        else if ((row == (int)pacman.getLocation().getX() + 1 && column == (int)pacman.getLocation().getY() + 1))
-//            return true;
-//        else
-//            return false;
-
     }
 
 
@@ -202,8 +199,16 @@ public class PacmanView extends Group {
         this.initializeGrid();
     }
 
-    public static void playDotEatingSound(boolean play) {
-//        dotEatingSound.setAutoPlay(play);
+    public static void playDotEatingSound() {
+        dotEatingSound.play();
+    }
+
+    public static void playPacmanDiesSound() {
+        pacmanDiesSound.play();
+    }
+
+    public static void playEatingGhostSound() {
+        eatingGhostSound.play();
     }
 
 }

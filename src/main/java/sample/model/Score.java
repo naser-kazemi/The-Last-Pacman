@@ -1,7 +1,6 @@
-package sample.controller;
+package sample.model;
 
 import com.google.gson.Gson;
-import sample.model.User;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,13 +13,17 @@ public class Score {
 
 
     protected LocalDateTime id;
-    protected Integer scoreValue;
-    protected User user;
+    protected Integer scoreValue = new Integer(0);
+    protected String username;
     protected int rank;
 
-    public Score(int score, User user) {
-       this.scoreValue = score;
-       this.user = user;
+
+    public Score() {}
+
+
+    public Score(int score, String username) {
+       this.username = username;
+       this.scoreValue = new Integer(score);
        this.id = LocalDateTime.now();
        scores.add(this);
         try {
@@ -53,7 +56,7 @@ public class Score {
 
     public Score getScoreByUser(User user) {
         for (Score score : scores) {
-            if (score.user.getUsername().equals(user.getUsername()))
+            if (score.username.equals(user.getUsername()))
                 return score;
         }
         return  null;
@@ -83,24 +86,24 @@ public class Score {
 
     public static void main(String[] args) {
         User user = new User("naser", "pass");
-        new Score(100, user);
-        new Score(823, user);
-        new Score(87, user);
-        new Score(3883, user);
-        new Score(100, user);
-        new Score(355, user);
-        new Score(23, user);
-        new Score(823, user);
-        new Score(76, user);
-        new Score(700, user);
+        new Score(100, user.getUsername());
+        new Score(823, user.getUsername());
+        new Score(87, user.getUsername());
+        new Score(3883, user.getUsername());
+        new Score(100, user.getUsername());
+        new Score(355, user.getUsername());
+        new Score(23, user.getUsername());
+        new Score(823, user.getUsername());
+        new Score(76, user.getUsername());
+        new Score(700, user.getUsername());
         Score.sortScores();
         for (Score score : scores) {
             System.out.println(score.scoreValue + "\t\t" + score.id);
         }
     }
 
-    public User getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
 

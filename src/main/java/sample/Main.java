@@ -1,5 +1,7 @@
 package sample;
 
+import sample.controller.AccountSettingPageController;
+import sample.model.Score;
 import sample.model.User;
 import sample.view.WelcomePage;
 import com.google.gson.*;
@@ -9,6 +11,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import static sample.view.MainPage.isPlayAsGuest;
 
 
 public class Main {
@@ -29,6 +33,15 @@ public class Main {
         }catch(IOException e) {
             e.printStackTrace();
         }
+        try {
+            String data = new String(Files.readAllBytes(Paths.get("src/main/resources/sample/data/Scores.json")));
+            ArrayList<Score> scores = new Gson().fromJson(data, new TypeToken<ArrayList<Score>>(){}.getType());
+            Score.setScores(scores);
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
+        while(User.getUsernames().contains("******Guest******"))
+            User.deleteUser(User.getUserByUsername("******Guest******"));
     }
 
 
@@ -36,6 +49,15 @@ public class Main {
     public static void main(String[] args) {
         initiateProgram();
         new WelcomePage().run(args);
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            public void run() {
+                if (isPlayAsGuest) {
+                    while (User.getUsernames().contains("******Guest******"))
+                        AccountSettingPageController.getInstance().deleteAccount();
+                }
+                System.exit(0);
+            }
+        }));
     }
 
 }

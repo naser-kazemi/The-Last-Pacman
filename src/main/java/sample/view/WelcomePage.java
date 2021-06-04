@@ -1,11 +1,16 @@
 package sample.view;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import sample.controller.LoginPageController;
+import sample.model.User;
 
 import java.net.URL;
 import java.util.Objects;
@@ -44,6 +49,9 @@ public class WelcomePage extends Application {
 
     public void goToMainPageAsGuest(MouseEvent mouseEvent) throws Exception {
         System.out.println(mouseEvent.getSource());
+        MainPage.isPlayAsGuest = true;
+        new User("******Guest******", "%$#@NoPassword@#$%");
+        LoginPageController.getInstance().login("******Guest******", "%$#@NoPassword@#$%");
         new MainPage().start(mainStage);
     }
 

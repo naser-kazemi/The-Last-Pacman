@@ -9,23 +9,26 @@
 
 
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane prefHeight="549.0" prefWidth="800.0" style="-fx-background-color: #261e7d;"
+            xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="sample.view.WelcomePage">
    <top>
        <HBox  BorderPane.alignment="CENTER" alignment="CENTER">
-           <Label alignment="TOP_CENTER" text="Pacman" >
+           <Label alignment="TOP_CENTER" text="Pacman" textFill="azure">
                <font>
-                   <Font size="22.0" />
+                   <Font name="Roboto Light" size="35.0" />
                </font>
            </Label>
        </HBox>
    </top>
    <center>
-      <VBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" >
-          <Button text="Login" onMouseClicked="#goToLoginPage"/>
-          <Button text="Play as a guest" onMouseClicked="#goToMainPageAsGuest"/>
-          <Button text="Exit" onMouseClicked="#exit"/>
+      <VBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" spacing="20">
+          <Button text="Login" onMouseClicked="#goToLoginPage" textFill="black"
+                  style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+          <Button text="Play as a guest" onMouseClicked="#goToMainPageAsGuest" textFill="black"
+                  style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+          <Button text="Exit" onMouseClicked="#exit" textFill="black"
+                  style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
       </VBox>
-
    </center>
 </BorderPane>

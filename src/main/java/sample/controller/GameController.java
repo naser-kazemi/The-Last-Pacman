@@ -1,27 +1,27 @@
 package sample.controller;
 
+import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
-import sample.model.Map;
 import sample.model.Pacman;
+import sample.model.Score;
 import sample.model.User;
-import sample.view.GamePage;
-import sample.view.MainPage;
-import sample.view.PacmanView;
+import sample.view.*;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,6 +35,7 @@ public class GameController implements EventHandler<KeyEvent> {
     private static boolean gameHasEnded;
     private static boolean savedGame;
     private static Pacman classPacman;
+    public StackPane pauseMenu = new StackPane();
 
 
     @FXML private Label scoreLabel;
@@ -44,8 +45,20 @@ public class GameController implements EventHandler<KeyEvent> {
     private Pacman pacman;
     private boolean paused;
     private Timer timer;
+    @FXML public MediaView themeMediaView;
+    @FXML public Button muteButton = new Button();
+    @FXML public Button pauseButton = new Button();
+    @FXML protected final ImageView pauseImage = new ImageView(new Image(Objects.requireNonNull(GamePage.class.
+    getResourceAsStream("/Sample/images/pause.png"))));
+    @FXML protected final ImageView muted = new ImageView(new Image((Objects.requireNonNull(GamePage.class.
+            getResourceAsStream("/Sample/images/muted.png")))));
+    @FXML protected final ImageView unmuted = new ImageView(new Image((Objects.requireNonNull(GamePage.class.
+            getResourceAsStream("/Sample/images/unmuted.png")))));
+    public boolean isMuted;
+    public Button resumeButton = new Button();
+    public Button restartGameButton = new Button();
+    public Button returnToMainPageButton = new Button();
 
-    ArrayList<Map> userMaps;
 
 
 
@@ -61,17 +74,6 @@ public class GameController implements EventHandler<KeyEvent> {
         classPacman = pacman;
     }
 
-    public void setMaps() {
-        try  {
-            String data = new String(Files.readAllBytes(Paths.get("src/main/resources/Sample/Data/Maps/" +
-                                    currentUser.getUsername() + ".json")));
-            userMaps = new Gson().fromJson(data, new TypeToken<ArrayList<Map>>(){}.getType());
-
-        }catch(IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
 
     public void initialize() throws IOException {
@@ -83,9 +85,6 @@ public class GameController implements EventHandler<KeyEvent> {
             this.startTimer();
         }
         else {
-//            String data = new String(Files.readAllBytes(Paths.get("src/main/resources/Sample/Data/savedGames/" +
-//                                        currentUser.getUsername() + ".json")));
-//            this.pacman = new Gson().fromJson(data, new TypeToken<Pacman>(){}.getType());
             this.pacman = currentUser.getPacman();
             this.update(Pacman.Direction.NONE);
             energyBombCounter = 100;
@@ -93,21 +92,39 @@ public class GameController implements EventHandler<KeyEvent> {
             savedGame = false;
         }
         setPacman(pacman);
+        themeMediaView = new MediaView(PacmanView.themeSound);
     }
 
 
 
-
-    //TODO Lives
     public void update(Pacman.Direction direction) {
+        pacmanView.setEffect(null);
+        pacmanView.requestFocus();
+        pauseMenu.setVisible(false);
+        unmuted.setFitHeight(30);
+        unmuted.setFitWidth(30);
+        muted.setFitHeight(30);
+        muted.setFitWidth(30);
+        pauseImage.setFitHeight(30);
+        pauseImage.setFitWidth(30);
+        if (isMuted)
+            muteButton.setGraphic(muted);
+        else
+            muteButton.setGraphic(unmuted);
+        pauseButton.setGraphic(pauseImage);
         this.pacman.makeMove(direction);
-        //TODO pacmanView
         this.pacmanView.updateGrid(pacman);
         this.scoreLabel.setText(String.format("Score: %d", this.pacman.getScore()));
         this.liveLabel.setText(String.format("Lives: %d", this.pacman.getLives()));
         if (Pacman.isGameOver()) {
+            if (currentUser.getHighestScore() < this.pacman.getScore()) {
+                new Score(this.pacman.getScore(), currentUser.getUsername());
+                Score.updateScores();
+                currentUser.setHighestScore(this.pacman.getScore());
+            }
             this.gameOverLabel.setText(String.format("GAME OVER"));
             pause();
+            currentUser.setHasSaved(false);
         }
         if (Pacman.haveYouWon()) {
             this.gameOverLabel.setText(String.format("YOU WON!"));
@@ -134,17 +151,18 @@ public class GameController implements EventHandler<KeyEvent> {
                 });
             }
         };
-        long frameTimeInMilliseconds = (long)(650.0 / FRAMES_PER_SECOND);
+        long frameTimeInMilliseconds = (long)(600.0 / FRAMES_PER_SECOND);
         this.timer.schedule(timerTask, 0, frameTimeInMilliseconds);
     }
 
     public void pause() {
         this.timer.cancel();
         this.paused = true;
+        pauseMenu.setVisible(true);
+        pacmanView.setEffect(new GaussianBlur());
     }
 
 
-    //TODO add more keys
     @Override
     public void handle(KeyEvent keyEvent) {
         boolean keyRecognized = true;
@@ -171,7 +189,9 @@ public class GameController implements EventHandler<KeyEvent> {
         }
     }
 
+    @FXML
     private void resume() {
+        pauseMenu.setVisible(false);
         this.startTimer();
         paused = false;
     }
@@ -182,7 +202,6 @@ public class GameController implements EventHandler<KeyEvent> {
     }
 
 
-    //TODO set counter
     public static void setEnergyBombCounter() {
         energyBombCounter = 100;
     }
@@ -205,32 +224,62 @@ public class GameController implements EventHandler<KeyEvent> {
         GameController.mainStage = mainStage;
     }
 
-    //TODO remove user instantiation
-    public void returnToMainPage(MouseEvent mouseEvent) throws Exception {
-        System.out.println(mouseEvent);
+    public void returnToMainPage() throws Exception {
         if (currentUser != null) {
             currentUser.setPacman(pacman);
             pacman.setSavedGame(true);
             FileWriter jsonWriter = new FileWriter("src/main/resources/Sample/Data/savedGames/" + currentUser.getUsername() + ".json");
             jsonWriter.write(new Gson().toJson(currentUser.getPacman()));
             jsonWriter.close();
-            currentUser.setHasSaved(true);
+            if (!Pacman.isGameOver())
+                currentUser.setHasSaved(true);
             User.updateUsers();
         }
         this.timer.cancel();
+        PacmanView.themeSound.stop();
         new MainPage().start(GamePage.getMainStage());
     }
 
-    public void restartGame(MouseEvent mouseEvent) throws Exception {
-        System.out.println(mouseEvent);
-//        this.timer.cancel();
-//        pacman.initializeGame("src/main/resources/Sample/Data/Maps/level1.txt");
-//        paused = false;
-//        pacman.setGameOver(false);
+    public void restartGame() throws Exception {
+        PacmanView.themeSound.stop();
         new GamePage().start(GamePage.getMainStage());
     }
 
     public static void setSavedGame(boolean savedGame) {
         GameController.savedGame = savedGame;
+    }
+
+    public void goBack(MouseEvent mouseEvent) throws Exception {
+        new NewMazePage().start(NewMazePage.mainStage);
+    }
+
+    public void createNewMap(MouseEvent mouseEvent) throws Exception {
+        new NewMazePage().createAnotherMap();
+    }
+
+    public void muteUnmute(MouseEvent mouseEvent) throws Exception {
+        if (isMuted)
+            unMuteGame();
+        else
+            muteGame();
+    }
+
+
+    public void muteGame() {
+        muteButton.setGraphic(muted);
+        PacmanView.themeSound.setVolume(0);
+        PacmanView.dotEatingSound.setVolume(0);
+        PacmanView.pacmanDiesSound.setVolume(0);
+        PacmanView.eatingGhostSound.setVolume(0);
+        isMuted = true;
+    }
+
+    public void unMuteGame() {
+        muteButton.setGraphic(unmuted);
+        PacmanView.themeSound.setVolume(2);
+        PacmanView.dotEatingSound.setVolume(2.5);
+        PacmanView.pacmanDiesSound.setVolume(2.5);
+        PacmanView.eatingGhostSound.setVolume(2.5);
+        isMuted = false;
     }
 }

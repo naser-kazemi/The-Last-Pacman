@@ -5,10 +5,30 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import sample.view.MazeView?>
+<?import sample.view.PacmanView?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sample.fxml.MazePage"
-            prefHeight="400.0" prefWidth="600.0" >
+<?import javafx.geometry.Insets?>
+<BorderPane fx:controller="sample.controller.GameController" style="-fx-background-color: Black;" xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <BorderPane prefHeight="35" style="-fx-background-color: #5115a5; -fx-padding: 10px, 5px, 10px, 5px" >
+            <left><Label fx:id="scoreLabel" style="-fx-font-size: 150%; -fx-text-fill: white" /></left>
+            <center><Label fx:id="gameOverLabel" style="-fx-font-size: 150%; -fx-text-fill: white" /></center>
+            <right><Label fx:id="liveLabel" style="-fx-font-size: 150%; -fx-text-fill: white"/></right>
+        </BorderPane>
+    </top>
 
-</AnchorPane>
+    <center>
+        <PacmanView fx:id="pacmanView" rowCount="21" columnCount="19" />
+    </center>
+
+    <bottom>
+        <HBox spacing="20" prefHeight="35" style="-fx-padding: 20px, 10px, 20px, 10px; -fx-background-color: #091c65" alignment="CENTER">
+            <Button text="Back" onMouseClicked="#goBack" textFill="black"  style="-fx-background-color: #e2b44d;"/>
+            <Button text="Create Another Maze" onMouseClicked="#createNewMap" textFill="black"  style="-fx-background-color: #e2b44d;"/>
+            <padding>
+                <Insets bottom="15.0" left="250.0" right="250.0" top="15.0"/>
+            </padding>
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -62,7 +62,7 @@ public class SingUpPageController {
     public static class IsPasswordValidHandler extends Handler {
         @Override
         public String handle(String username, String password, String confirmPassword) {
-            Matcher matcher = getMatcher(password, "\\d{1,3}[A-Z][a-z]{5,10}");
+            Matcher matcher = getMatcher(password, "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$^#~!%*?&])[A-Za-z\\d@$^#~!%*?&]{8,32}$");
             if (matcher.matches()) {
                 if (nextHandler != null)
                     return nextHandler.handle(username, password, confirmPassword);
@@ -71,7 +71,11 @@ public class SingUpPageController {
             }
 
             else
-                return "Invalid Password";
+                return """
+                        Invalid Password!
+                        Password must contain from 8 to 32 characters; at least
+                        one uppercase letter, one lowercase letter,
+                        one number and one special character""";
         }
     }
 

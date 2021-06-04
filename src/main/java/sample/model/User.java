@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import sample.view.LoginPage;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,17 +16,20 @@ public class User {
     protected static ArrayList<User> users = new ArrayList<>();
     protected static ArrayList<String> usernames = new ArrayList<>();
 
-
-    protected ArrayList<Map> maps = new ArrayList<>();
     protected String username;
     protected String password;
     protected Pacman pacman;
+    public int mapCounter = 0;
     protected boolean hasSaved;
+    private int highestScore;
 
+
+    public User() {}
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.highestScore = 0;
         users.add(this);
         usernames.add(username);
         try {
@@ -34,6 +38,14 @@ public class User {
             jsonWriter.close();
         }catch (IOException e) {
             e.printStackTrace();
+        }
+        File file = new File("src/main/resources/Sample/Data/personalMaps/" + this.username);
+        if (!file.exists()) {
+            if (file.mkdir()) {
+                System.out.println("Directory is created!");
+            } else {
+                System.out.println("Failed to create directory!");
+            }
         }
     }
 
@@ -75,6 +87,19 @@ public class User {
         User.usernames.addAll(usernames);
     }
 
+
+    public static ArrayList<User> getUsers() {
+        return users;
+    }
+
+
+    public static void deleteUser(User user) {
+        users.remove(user);
+        usernames.remove(user.username);
+        updateUsers();
+    }
+
+
     public void setPacman(Pacman pacman) {
         this.pacman = pacman;
     }
@@ -98,5 +123,24 @@ public class User {
 
     public boolean getHasSaved() {
         return hasSaved;
+    }
+
+    public static void main(String[] args) {
+        new User("naser", "password");
+        new User("sara", "password");
+    }
+
+
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
+        updateUsers();
+    }
+
+    public void setHighestScore(int highestScore) {
+        this.highestScore = highestScore;
+    }
+
+    public int getHighestScore() {
+        return highestScore;
     }
 }

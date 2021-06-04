@@ -11,16 +11,16 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="sample.view.SignUpSuccessfulPage"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="549.0" prefWidth="800.0" style="-fx-background-color: #261e7d;" >
 
     <center>
-        <VBox alignment="CENTER">
-            <Label text="Sign Up Successful!">
+        <VBox alignment="CENTER" spacing="20">
+            <Label text="Sign Up Successful!" textFill="azure">
                 <font>
-                    <Font size="22"/>
+                    <Font name="Roboto Light" size="35.0" />
                 </font>
             </Label>
-            <Button text="Go to Login Page" onMouseClicked="#goBack"/>
+            <Button text="Go to Login Page" onMouseClicked="#goBack" textFill="black"  style="-fx-background-color: #e2b44d;"/>
         </VBox>
     </center>
 

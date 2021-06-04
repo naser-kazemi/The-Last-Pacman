@@ -7,12 +7,9 @@ import sample.view.PacmanView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 
-//TODO create easy and hard mode
 public class Pacman {
 
 
@@ -24,17 +21,25 @@ public class Pacman {
         UP, DOWN, LEFT, RIGHT, NONE
     }
 
-    protected static String currentFilename;
+    public enum Mode {
+        EASY, HARD
+    }
+
     private static Direction lastDirection;
     private static Direction currentDirection;
     private static boolean energyBombActive;
     private static boolean gameOver;
     private static boolean hasLost;
     private static boolean hasWon;
+    public static int selectedLives = 3;
+    public static boolean isMapDefault = true;
+    public static String mapFileName;
+    public static Mode staticMode = Mode.HARD;
 
 
 
-
+    protected Mode mode;
+    protected int thisPacmanSelectedLives;
     @FXML protected int rowCount;
     @FXML protected int columnCount;
     private Cell[][] grid;
@@ -45,7 +50,6 @@ public class Pacman {
     protected int energyBombCount;
     protected int initialEnergyBombCount;
     protected int eatenGhostCount = 0;
-    protected Map startMap;
     private Point2D pacmanLocation;
     private Point2D pacmanVelocity;
     private Point2D ghost1Location;
@@ -75,6 +79,9 @@ public class Pacman {
     protected boolean savedGame;
 
 
+
+
+
     public Pacman() {
         if (savedGame)
             loadSavedGame();
@@ -88,8 +95,8 @@ public class Pacman {
     }
 
 
-    //TODO initialize level
     public void startNewGame() {
+        this.mode = staticMode;
         gameOver = false;
         energyBombActive = false;
         hasLost = false;
@@ -99,9 +106,11 @@ public class Pacman {
         rowCount = 0;
         columnCount = 0;
         this.score = 0;
-        this.lives = 3;
-//        initializeGame(currentFilename);
-        initializeGame("src/main/resources/sample/data/maps/level1.txt");
+        thisPacmanSelectedLives = selectedLives;
+        this.lives = thisPacmanSelectedLives;
+        if (isMapDefault)
+            mapFileName = "src/main/resources/sample/data/maps/level1.txt";
+        initializeGame(mapFileName);
     }
 
 
@@ -168,9 +177,7 @@ public class Pacman {
                     thisValue = Cell.EMPTY;
                 grid[row][column] = thisValue;
                 column++;
-//                System.out.print(value);
             }
-//            System.out.println();
             row++;
         }
     }
@@ -208,10 +215,6 @@ public class Pacman {
         ghost4Location = new Point2D(ghost4Row,ghost4Column);
         ghost4InitialLocation = new Point2D(ghost4Row,ghost4Column);
         ghost4Velocity = new Point2D(-1, 0);
-//        System.out.println(ghost1Location + "\t" + ghost1Velocity);
-//        System.out.println(ghost2Location + "\t\t" + ghost2Velocity);
-//        System.out.println(ghost3Location + "\t\t" + ghost3Velocity);
-//        System.out.println(ghost4Location + "\t\t" + ghost4Velocity);
         currentDirection = Direction.NONE;
         lastDirection = Direction.NONE;
     }
@@ -249,7 +252,9 @@ public class Pacman {
             columnCount = 0;
             hasLost = false;
             energyBombActive = false;
-            initializeGame("src/main/resources/Sample/Data/Maps/level1.txt");
+            if (isMapDefault)
+                mapFileName = "src/main/resources/Sample/Data/maps/level1.txt";
+            initializeGame(mapFileName);
         }
         else if (this.lives == 0) {
             gameOver = true;
@@ -355,8 +360,7 @@ public class Pacman {
     }
 
 
-    public Point2D[] moveInTheSameColumnTowardsPacman(Point2D location, Point2D velocity) {
-        Random random = new Random();
+    public Point2D[] moveInTheSameColumnTowardsPacman(Point2D location, Point2D velocity, Random random) {
         if (location.getX() > pacmanLocation.getX()) {
             velocity = setVelocity(Direction.UP);
         } else {
@@ -364,25 +368,18 @@ public class Pacman {
         }
         Point2D potentialLocation = location.add(velocity);
         potentialLocation = adjustColumnLocation(potentialLocation);
-        int column = (int) potentialLocation.getY();
-        int row = (int) location.getX();
-        while (grid[row][column] == Cell.WALL) {
+        while (grid[(int) potentialLocation.getX()][(int) potentialLocation.getY()] == Cell.WALL) {
             int randomNum = random.nextInt(4);
             Direction direction = intToDirection(randomNum);
             velocity = setVelocity(direction);
             potentialLocation = location.add(velocity);
         }
         location = potentialLocation;
-        System.out.println("\n-----------------------------------------------------");
-        System.out.println(potentialLocation);
-        System.out.println(velocity);
-        System.out.println("\n-----------------------------------------------------");
         return new Point2D[]{location, velocity};
     }
 
 
-    public Point2D[] moveInTheSameRowTowardsPacman(Point2D location, Point2D velocity) {
-        Random random = new Random();
+    public Point2D[] moveInTheSameRowTowardsPacman(Point2D location, Point2D velocity, Random random) {
         if (location.getY() > pacmanLocation.getY()) {
             velocity = setVelocity(Direction.LEFT);
         } else {
@@ -390,19 +387,13 @@ public class Pacman {
         }
         Point2D potentialLocation = location.add(velocity);
         potentialLocation = adjustColumnLocation(potentialLocation);
-        int column = (int) potentialLocation.getY();
-        int row = (int) location.getX();
-        while (grid[row][column] == Cell.WALL) {
+        while (grid[(int) potentialLocation.getX()][(int) potentialLocation.getY()] == Cell.WALL) {
             int randomNum = random.nextInt(4);
             Direction direction = intToDirection(randomNum);
             velocity = setVelocity(direction);
             potentialLocation = location.add(velocity);
         }
         location = potentialLocation;
-        System.out.println("\n-----------------------------------------------------");
-        System.out.println(potentialLocation);
-        System.out.println(velocity);
-        System.out.println("\n-----------------------------------------------------");
         return  new Point2D[]{location, velocity};
     }
 
@@ -422,8 +413,7 @@ public class Pacman {
         }
     }
 
-    public Point2D[] getAwayInTheSameColumnFromPacman(Point2D location, Point2D velocity) {
-        Random random = new Random();
+    public Point2D[] getAwayInTheSameColumnFromPacman(Point2D location, Point2D velocity, Random random) {
         if (location.getX() > pacmanLocation.getX()) {
             velocity = setVelocity(Direction.DOWN);
         } else {
@@ -431,25 +421,18 @@ public class Pacman {
         }
         Point2D potentialLocation = location.add(velocity);
         potentialLocation = adjustColumnLocation(potentialLocation);
-        int column = (int) potentialLocation.getY();
-        int row = (int) location.getX();
-        while (grid[row][column] == Cell.WALL) {
+        while (grid[(int) potentialLocation.getX()][(int) potentialLocation.getY()] == Cell.WALL) {
             int randomNum = random.nextInt(4);
             Direction direction = intToDirection(randomNum);
             velocity = setVelocity(direction);
             potentialLocation = location.add(velocity);
         }
-        System.out.println("\n-----------------------------------------------------");
-        System.out.println(potentialLocation);
-        System.out.println(velocity);
-        System.out.println("\n-----------------------------------------------------");
         location = potentialLocation;
         return new Point2D[]{location, velocity};
     }
 
 
-    public Point2D[] getAwayInTheSameRowFromPacman(Point2D location, Point2D velocity) {
-        Random random = new Random();
+    public Point2D[] getAwayInTheSameRowFromPacman(Point2D location, Point2D velocity, Random random) {
         if (location.getY() > pacmanLocation.getY()) {
             velocity = setVelocity(Direction.RIGHT);
         } else {
@@ -457,24 +440,17 @@ public class Pacman {
         }
         Point2D potentialLocation = location.add(velocity);
         potentialLocation = adjustColumnLocation(potentialLocation);
-        int column = (int) potentialLocation.getY();
-        int row = (int) location.getX();
-        while (grid[row][column] == Cell.WALL) {
+        while (grid[(int) potentialLocation.getX()][(int) potentialLocation.getY()] == Cell.WALL) {
             int randomNum = random.nextInt(4);
             Direction direction = intToDirection(randomNum);
             velocity = setVelocity(direction);
             potentialLocation = location.add(velocity);
         }
         location = potentialLocation;
-        System.out.println("\n-----------------------------------------------------");
-        System.out.println(potentialLocation);
-        System.out.println(velocity);
-        System.out.println("\n-----------------------------------------------------");
         return new Point2D[]{location, velocity};
     }
 
-    public Point2D[] moveGhostRandomly(Point2D location, Point2D velocity) {
-        Random random = new Random();
+    public Point2D[] moveGhostRandomly(Point2D location, Point2D velocity, Random random) {
         Point2D potentialLocation = location.add(velocity);
         potentialLocation = adjustColumnLocation(potentialLocation);
         while(grid[(int) potentialLocation.getX()][(int) potentialLocation.getY()] == Cell.WALL){
@@ -484,159 +460,63 @@ public class Pacman {
             potentialLocation = location.add(velocity);
         }
         location = potentialLocation;
-        System.out.println("\n-----------------------------------------------------");
-        System.out.println(potentialLocation);
-        System.out.println(velocity);
-        System.out.println("\n-----------------------------------------------------");
         return new Point2D[]{location, velocity};
     }
 
 
-    public Point2D[] moveTowardsPacman(Point2D location, Point2D velocity) {
+    public Point2D[] moveTowardsPacman(Point2D location, Point2D velocity, Random random) {
         if (location.getY() == pacmanLocation.getY())
-            return moveInTheSameColumnTowardsPacman(location, velocity);
+            return moveInTheSameColumnTowardsPacman(location, velocity, random);
         else if (location.getX() == pacmanLocation.getX())
-            return moveInTheSameRowTowardsPacman(location, velocity);
+            return moveInTheSameRowTowardsPacman(location, velocity, random);
         else
-            return moveGhostRandomly(location, velocity);
+            return moveGhostRandomly(location, velocity, random);
     }
 
 
-    public Point2D[] getAwayFromPacman(Point2D location, Point2D velocity) {
+    public Point2D[] getAwayFromPacman(Point2D location, Point2D velocity, Random random) {
         if (location.getY() == pacmanLocation.getY())
-            return getAwayInTheSameColumnFromPacman(location, velocity);
+            return getAwayInTheSameColumnFromPacman(location, velocity, random);
         else if (location.getX() == pacmanLocation.getX())
-            return getAwayInTheSameRowFromPacman(location, velocity);
+            return getAwayInTheSameRowFromPacman(location, velocity, random);
         else
-            return moveGhostRandomly(location, velocity);
+            return moveGhostRandomly(location, velocity, random);
     }
 
 
-    public Point2D[] moveThisGhost(Point2D location, Point2D velocity) {
-//        System.out.println(location);
-//        System.out.println(velocity);
-//        System.out.println("----------------------------------------------------------------");
-//        if (!energyBombActive)
-//            return moveTowardsPacman(location, velocity);
-//        else
-//            return getAwayFromPacman(location, velocity);
-//        System.out.println(location);
-//        System.out.println(velocity);
-//        System.out.println("\n\n----------------------------------------------------------------\n\n");
-//        return new Point2D[]{location, velocity};
+
+    public Point2D[] moveThisGhostEasyMode(Point2D location, Point2D velocity) {
         Random generator = new Random();
-        //if the ghost is in the same row or column as PacMan and not in ghostEatingMode,
-        // go in his direction until you get to a wall, then go a different direction
-        //otherwise, go in a random direction, and if you hit a wall go in a different random direction
-        if (!energyBombActive) {
-            //check if ghost is in PacMan's column and move towards him
-            if (location.getY() == pacmanLocation.getY()) {
-                if (location.getX() > pacmanLocation.getX()) {
-                    velocity = setVelocity(Direction.UP);
-                } else {
-                    velocity = setVelocity(Direction.DOWN);
-                }
-                Point2D potentialLocation = location.add(velocity);
-                //if the ghost would go offscreen, wrap around
-                potentialLocation = adjustColumnLocation(potentialLocation);
-                //generate new random directions until ghost can move without hitting a wall
-                while (grid[(int) potentialLocation.getX()][(int) potentialLocation.getY()] == Cell.WALL) {
-                    int randomNum = generator.nextInt(4);
-                    Direction direction = intToDirection(randomNum);
-                    velocity = setVelocity(direction);
-                    potentialLocation = location.add(velocity);
-                }
-                location = potentialLocation;
-            }
-            //check if ghost is in PacMan's row and move towards him
-            else if (location.getX() == pacmanLocation.getX()) {
-                if (location.getY() > pacmanLocation.getY()) {
-                    velocity = setVelocity(Direction.LEFT);
-                } else {
-                    velocity = setVelocity(Direction.RIGHT);
-                }
-                Point2D potentialLocation = location.add(velocity);
-                potentialLocation = adjustColumnLocation(potentialLocation);
-                while (grid[(int) potentialLocation.getX()][(int) potentialLocation.getY()] == Cell.WALL) {
-                    int randomNum = generator.nextInt(4);
-                    Direction direction = intToDirection(randomNum);
-                    velocity = setVelocity(direction);
-                    potentialLocation = location.add(velocity);
-                }
-                location = potentialLocation;
-            }
-            //move in a consistent random direction until it hits a wall, then choose a new random direction
-            else{
-                Point2D potentialLocation = location.add(velocity);
-                potentialLocation = adjustColumnLocation(potentialLocation);
-                while(grid[(int) potentialLocation.getX()][(int) potentialLocation.getY()] == Cell.WALL){
-                    int randomNum = generator.nextInt( 4);
-                    Direction direction = intToDirection(randomNum);
-                    velocity = setVelocity(direction);
-                    potentialLocation = location.add(velocity);
-                }
-                location = potentialLocation;
-            }
+        Point2D potentialLocation = location.add(velocity);
+        potentialLocation = adjustColumnLocation(potentialLocation);
+        while(grid[(int) potentialLocation.getX()][(int) potentialLocation.getY()] == Cell.WALL){
+            int randomNum = generator.nextInt( 4);
+            Direction direction = intToDirection(randomNum);
+            velocity = setVelocity(direction);
+            potentialLocation = location.add(velocity);
         }
-        //if the ghost is in the same row or column as Pacman and in ghostEatingMode, go in the opposite direction
-        // until it hits a wall, then go a different direction
-        //otherwise, go in a random direction, and if it hits a wall go in a different random direction
-        if (energyBombActive) {
-            if (location.getY() == pacmanLocation.getY()) {
-                if (location.getX() > pacmanLocation.getX()) {
-                    velocity = setVelocity(Direction.DOWN);
-                } else {
-                    velocity = setVelocity(Direction.UP);
-                }
-                Point2D potentialLocation = location.add(velocity);
-                potentialLocation = adjustColumnLocation(potentialLocation);
-                while (grid[(int) potentialLocation.getX()][(int) potentialLocation.getY()] == Cell.WALL) {
-                    int randomNum = generator.nextInt(4);
-                    Direction direction = intToDirection(randomNum);
-                    velocity = setVelocity(direction);
-                    potentialLocation = location.add(velocity);
-                }
-                location = potentialLocation;
-            } else if (location.getX() == pacmanLocation.getX()) {
-                if (location.getY() > pacmanLocation.getY()) {
-                    velocity = setVelocity(Direction.RIGHT);
-                } else {
-                    velocity = setVelocity(Direction.LEFT);
-                }
-                Point2D potentialLocation = location.add(velocity);
-                potentialLocation = adjustColumnLocation(potentialLocation);
-                while (grid[(int) potentialLocation.getX()][(int) potentialLocation.getY()] == Cell.WALL) {
-                    int randomNum = generator.nextInt(4);
-                    Direction direction = intToDirection(randomNum);
-                    velocity = setVelocity(direction);
-                    potentialLocation = location.add(velocity);
-                }
-                location = potentialLocation;
-            }
-            else{
-                Point2D potentialLocation = location.add(velocity);
-                potentialLocation = adjustColumnLocation(potentialLocation);
-                while(grid[(int) potentialLocation.getX()][(int) potentialLocation.getY()] == Cell.WALL){
-                    int randomNum = generator.nextInt( 4);
-                    Direction direction = intToDirection(randomNum);
-                    velocity = setVelocity(direction);
-                    potentialLocation = location.add(velocity);
-                }
-                location = potentialLocation;
-            }
-        }
+        location = potentialLocation;
         Point2D[] data = {location, velocity};
         return data;
-
     }
 
 
-    // ******Hard Mode******xxx
-    public void moveGhosts() {
-        Point2D[] ghost1Coordinates = moveThisGhost(ghost1Location,ghost1Velocity);
-        Point2D[] ghost2Coordinates = moveThisGhost(ghost2Location,ghost2Velocity);
-        Point2D[] ghost3Coordinates = moveThisGhost(ghost3Location,ghost3Velocity);
-        Point2D[] ghost4Coordinates = moveThisGhost(ghost4Location,ghost4Velocity);
+
+
+    public Point2D[] moveThisGhostHardMode(Point2D location, Point2D velocity) {
+        Random generator = new Random();
+        if (!energyBombActive)
+            return moveTowardsPacman(location, velocity, generator);
+        else
+            return getAwayFromPacman(location, velocity, generator);
+    }
+
+
+    public void moveGhostsEasyMode() {
+        Point2D[] ghost1Coordinates = moveThisGhostEasyMode(ghost1Location, ghost1Velocity);
+        Point2D[] ghost2Coordinates = moveThisGhostEasyMode(ghost2Location, ghost2Velocity);
+        Point2D[] ghost3Coordinates = moveThisGhostEasyMode(ghost3Location, ghost3Velocity);
+        Point2D[] ghost4Coordinates = moveThisGhostEasyMode(ghost4Location, ghost4Velocity);
         ghost1Location = ghost1Coordinates[0];
         ghost1Velocity = ghost1Coordinates[1];
         ghost2Location = ghost2Coordinates[0];
@@ -645,18 +525,28 @@ public class Pacman {
         ghost3Velocity = ghost3Coordinates[1];
         ghost4Location = ghost4Coordinates[0];
         ghost4Velocity = ghost4Coordinates[1];
-//        ghost1Location = ghost1Location.add(ghost1Velocity);
-//        ghost2Location = ghost2Location.add(ghost2Velocity);
-//        ghost3Location = ghost3Location.add(ghost3Velocity);
-//        ghost4Location = ghost4Location.add(ghost4Velocity);
-//        System.out.println(Arrays.toString(Arrays.stream(ghost1Coordinates).toArray()));
-//        System.out.println(Arrays.toString(Arrays.stream(ghost2Coordinates).toArray()));
-//        System.out.println(Arrays.toString(Arrays.stream(ghost3Coordinates).toArray()));
-//        System.out.println(Arrays.toString(Arrays.stream(ghost4Coordinates).toArray()));
     }
 
 
-    //TODO return all ghost
+
+    public void moveGhostsHardMode() {
+        Point2D[] ghost1Coordinates = moveThisGhostHardMode(ghost1Location, ghost1Velocity);
+        Point2D[] ghost2Coordinates = moveThisGhostHardMode(ghost2Location, ghost2Velocity);
+        Point2D[] ghost3Coordinates = moveThisGhostHardMode(ghost3Location, ghost3Velocity);
+        Point2D[] ghost4Coordinates = moveThisGhostHardMode(ghost4Location, ghost4Velocity);
+        ghost1Location = ghost1Coordinates[0];
+        ghost1Velocity = ghost1Coordinates[1];
+        ghost2Location = ghost2Coordinates[0];
+        ghost2Velocity = ghost2Coordinates[1];
+        ghost3Location = ghost3Coordinates[0];
+        ghost3Velocity = ghost3Coordinates[1];
+        ghost4Location = ghost4Coordinates[0];
+        ghost4Velocity = ghost4Coordinates[1];
+    }
+
+
+
+
     public void returnGhostToInitialLocation()  {
         returnThisGhostToInitialLocation(Cell.GHOST_1_HOME);
         returnThisGhostToInitialLocation(Cell.GHOST_2_HOME);
@@ -666,14 +556,18 @@ public class Pacman {
 
 
     public void returnThisGhostToInitialLocation(Cell ghost) {
-        if (ghost == Cell.GHOST_1_HOME)
+        if (ghost == Cell.GHOST_1_HOME) {
             ghost1Location = new Point2D(ghost1InitialLocation.getX(), ghost1InitialLocation.getY());
-        else if (ghost == Cell.GHOST_2_HOME)
+        }
+        else if (ghost == Cell.GHOST_2_HOME) {
             ghost2Location = new Point2D(ghost2InitialLocation.getX(), ghost2InitialLocation.getY());
-        else if (ghost == Cell.GHOST_3_HOME)
+        }
+        else if (ghost == Cell.GHOST_3_HOME) {
             ghost3Location = new Point2D(ghost3InitialLocation.getX(), ghost3InitialLocation.getY());
-        else if (ghost == Cell.GHOST_4_HOME)
+        }
+        else if (ghost == Cell.GHOST_4_HOME) {
             ghost4Location = new Point2D(ghost4InitialLocation.getX(), ghost4InitialLocation.getY());
+        }
     }
 
 
@@ -682,7 +576,7 @@ public class Pacman {
             grid[row][column] = Cell.EMPTY;
             dotCount--;
             score += 5;
-            PacmanView.playDotEatingSound(true);
+            PacmanView.playDotEatingSound();
         }
         if (grid[row][column] == Cell.ENERGY_BOMB) {
             grid[row][column] = Cell.EMPTY;
@@ -697,6 +591,7 @@ public class Pacman {
             eatenGhostCount++;
             score += 200 * eatenGhostCount;
             returnThisGhostToInitialLocation(ghost);
+            PacmanView.playEatingGhostSound();
         }
     }
 
@@ -709,23 +604,33 @@ public class Pacman {
 
 
     public void ghostEatPacman() {
-        if (pacmanLocation.equals(ghost1Location) || pacmanLocation.equals(ghost2Location) ||
-                pacmanLocation.equals(ghost3Location) || pacmanLocation.equals(ghost4Location)) {
+        boolean canBeEatenByGhost1 = pacmanLocation.equals(ghost1Location);
+        boolean canBeEatenByGhost2 = pacmanLocation.equals(ghost2Location);
+        boolean canBeEatenByGhost3 = pacmanLocation.equals(ghost3Location);
+        boolean canBeEatenByGhost4 = pacmanLocation.equals(ghost4Location);
+        if (canBeEatenByGhost1 || canBeEatenByGhost2 || canBeEatenByGhost3 || canBeEatenByGhost4) {
+            PacmanView.themeSound.setVolume(0.3);
+            PacmanView.playPacmanDiesSound();
+            PacmanView.themeSound.setVolume(2.5);
             returnGhostToInitialLocation();
-//            gameOver = true;
             if (lives != 0)
                 lives--;
             pacmanVelocity = new Point2D(0,0);
             pacmanLocation = new Point2D(pacmanInitialLocation.getX(),pacmanInitialLocation.getY());
+
         }
     }
 
 
-    //TODO eating and resetting ghosts
+
+
     public void makeMove(Direction direction) {
         this.movePacman(direction);
         eatElement((int) pacmanLocation.getX(), (int) pacmanLocation.getY());
-        this.moveGhosts();
+        if (mode == Mode.EASY)
+            this.moveGhostsEasyMode();
+        else
+            this.moveGhostsHardMode();
         if (energyBombActive)
             eatGhosts();
         else
@@ -820,4 +725,7 @@ public class Pacman {
     public void setSavedGame(boolean savedGame) {
         this.savedGame = savedGame;
     }
+
+
+
 }

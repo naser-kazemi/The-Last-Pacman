@@ -6,9 +6,34 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+            fx:controller="sample.view.SelectLivesAndMode"
+            prefHeight="549.0" prefWidth="800.0" style="-fx-background-color: #261e7d;">
+    <center>
+        <VBox alignment="CENTER" spacing="25">
+            <Button text="2" onMouseClicked="#setLives2" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px; -fx-pref-width: 80px;"/>
+            <Button text="3" onMouseClicked="#setLives3" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px; -fx-pref-width: 80px;"/>
+            <Button text="4" onMouseClicked="#setLives4" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px; -fx-pref-width: 80px;"/>
+            <Button text="5" onMouseClicked="#setLives5" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px; -fx-pref-width: 80px;"/>
+            <Button text="Next" onMouseClicked="#continueToSelectMode" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+        </VBox>
+    </center>
 
-</AnchorPane>
+    <bottom>
+        <HBox alignment="CENTER">
+            <Button text="Back" onMouseClicked="#backToMainPage" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <padding>
+                <Insets bottom="15.0" left="250.0" right="250.0" top="15.0" />
+            </padding>
+        </HBox>
+    </bottom>
+
+</BorderPane>

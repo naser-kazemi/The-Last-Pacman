@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Pacman" />
+        <module name="The-Last-Pacman" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="The-Last-Pacman" target="16" />
+    </bytecodeTargetLevel>
   </component>
 </project>

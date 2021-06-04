@@ -6,9 +6,22 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sample.fxml.MainPageAsGuest"
-            prefHeight="400.0" prefWidth="600.0" >
+            fx:controller="sample.view.MainPage"
+            prefHeight="549.0" prefWidth="800.0" style="-fx-background-color: #261e7d;">
 
-</AnchorPane>
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+            <Button text="New Game" onMouseClicked="#newGame" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Continue" onMouseClicked="#continueLastGame" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Select Map" onMouseClicked="#goToSelectMap" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Quit" onMouseClicked="#goBack" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+        </VBox>
+    </center>
+
+</BorderPane>

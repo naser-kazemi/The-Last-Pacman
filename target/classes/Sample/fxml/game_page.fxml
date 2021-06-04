@@ -8,25 +8,46 @@
 <?import javafx.scene.text.Font?>
 <?import sample.view.PacmanView?>
 
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
 <BorderPane fx:controller="sample.controller.GameController" style="-fx-background-color: Black;" xmlns:fx="http://javafx.com/fxml">
     <top>
-        <BorderPane prefHeight="35" style="-fx-background-color: #0B5091; -fx-padding: 10px, 5px, 10px, 5px" >
+        <BorderPane prefHeight="35" style="-fx-background-color: #5115a5; -fx-padding: 10px, 5px, 10px, 5px" >
             <left><Label fx:id="scoreLabel" style="-fx-font-size: 150%; -fx-text-fill: white" /></left>
             <center><Label fx:id="gameOverLabel" style="-fx-font-size: 150%; -fx-text-fill: white" /></center>
-            <right><Label fx:id="liveLabel" style="-fx-font-size: 150%; -fx-text-fill: white"/></right>
+            <right>
+                <HBox spacing="20">
+                    <Button fx:id="pauseButton" onMouseClicked="#pause" style="-fx-background-color: #f6ce1c;"/>
+                    <Button fx:id="muteButton" onMouseClicked="#muteUnmute" style="-fx-background-color: #f8c551;"/>
+                </HBox>
+            </right>
         </BorderPane>
     </top>
 
     <center>
-        <PacmanView fx:id="pacmanView" rowCount="21" columnCount="19" />
+        <StackPane>
+            <MediaView fx:id="themeMediaView"/>
+            <PacmanView fx:id="pacmanView" rowCount="21" columnCount="19" />
+            <StackPane fx:id="pauseMenu">
+                <VBox alignment="CENTER" spacing="25">
+                    <Button text="Resume" fx:id="resumeButton" onMouseClicked="#resume" textFill="black"
+                            style="-fx-background-color: #e2b44d; -fx-pref-height: 35px; -fx-pref-width: 80px"/>
+                    <Button text="Restart Game" fx:id="restartGameButton" onMouseClicked="#restartGame" textFill="black"
+                            style="-fx-background-color: #e2b44d; -fx-pref-height: 35px; -fx-pref-width: 110px"/>
+                    <Button text="Return to Main Page" fx:id="returnToMainPageButton" onMouseClicked="#returnToMainPage" textFill="black"
+                            style="-fx-background-color: #e2b44d; -fx-pref-height: 35px; -fx-pref-width: 160px"/>
+                </VBox>
+            </StackPane>
+        </StackPane>
     </center>
 
     <bottom>
-        <HBox prefHeight="35" style="-fx-padding: 10px, 5px, 10px, 5px; -fx-background-color: #F3B61D">
-            <Label style="-fx-font-size: 140%; -fx-text-fill: white"
-                   text="Move: arrow keys / New game: G" />
-            <Button text="Return to Main Page" onMouseClicked="#returnToMainPage"/>
-            <Button text="Restart Game" onMouseClicked="#restartGame"/>
-        </HBox>
+        <BorderPane prefHeight="35" style="-fx-padding: 10px, 5px, 10px, 5px; -fx-background-color: #F3B61D">
+<!--            <Button text="Return to Main Page" onMouseClicked="#returnToMainPage"/>-->
+<!--            <Button text="Restart Game" onMouseClicked="#restartGame"/>-->
+            <right><Label fx:id="liveLabel" style="-fx-font-size: 150%; -fx-text-fill: black"/></right>
+        </BorderPane>
     </bottom>
 </BorderPane>

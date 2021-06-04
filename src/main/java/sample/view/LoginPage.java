@@ -1,5 +1,6 @@
 package sample.view;
 
+import javafx.scene.paint.Color;
 import sample.controller.LoginPageController;
 import sample.model.User;
 import javafx.application.Application;
@@ -50,6 +51,8 @@ public class LoginPage extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        username.setStyle("-fx-text-inner-color: azure;");
+        password.setStyle("-fx-text-inner-color: azure;");
         mainStage = stage;
         URL loginPageAddress;
         if (currentUser != null)
@@ -95,6 +98,7 @@ public class LoginPage extends Application {
             TimeUnit.SECONDS.sleep(0);
             new MainPage().start(mainStage);
         }
+        result.setFill(new Color(1, 0.05, 0.2, 0.7));
         result.setText(message);
     }
 
@@ -111,6 +115,8 @@ public class LoginPage extends Application {
     @FXML
     protected void show() {
         if (currentUser != null) {
+            usernameText.setFill(new Color(0, 1, 0, 1));
+            passwordText.setFill(new Color(0, 1, 0, 1));
             usernameText.setText(currentUser.getUsername());
             passwordText.setText(currentUser.getPassword());
         }

@@ -103,6 +103,7 @@ public class LoginPageController {
         if (result.equals("Login Successful!")) {
             MainPage.setCurrentUser(User.getUserByUsername(username));
             LoginPage.setCurrentUser(User.getUserByUsername(username));
+            AccountSettingPageController.setCurrentUser(User.getUserByUsername(username));
             System.out.println(User.getUserByUsername(username).getUsername());
             LoginPage.getCurrentUser().readPacman();
             GameController.setCurrentUser(User.getUserByUsername(username));

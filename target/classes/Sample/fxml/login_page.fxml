@@ -7,47 +7,56 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="sample.view.LoginPage"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="549.0" prefWidth="800.0" style="-fx-background-color: #261e7d;">
 
 
     <top>
         <HBox alignment="CENTER" BorderPane.alignment="CENTER">
-            <Label alignment="CENTER" text="Login Page">
+            <Label alignment="CENTER" text="Login Page" textFill="azure">
                 <font>
-                    <Font size="22"/>
+                    <Font name="Roboto Light" size="35.0" />
                 </font>
             </Label>
         </HBox>
     </top>
 
     <center>
-        <VBox alignment="CENTER">
-            <Label text="Please enter your username and password"/>
+        <VBox alignment="CENTER" spacing="20">
+            <Label text="Please enter your username and password" textFill="azure"/>
             <HBox alignment="CENTER">
-                <Label text="Username"/>
-                <children>
-                    <TextField fx:id="username"/>
-                </children>
+                    <TextField promptText="Username" fx:id="username" style="-fx-background-color: #0b1622; -fx-text-fill:
+                    #f6f6f8; -fx-font-size: 10pt;-fx-pref-height: 40px; -fx-pref-width: 300px;"/>
             </HBox>
             <HBox alignment="CENTER">
-                <Label text="Password"/>
-                <PasswordField fx:id="password"/>
+                <PasswordField promptText="Password" fx:id="password" style="-fx-background-color: #0b1622; -fx-text-fill: #f6f6f8;
+                -fx-font-size: 10pt;-fx-pref-height: 40px; -fx-pref-width: 300px;"/>
             </HBox>
-            <Button text="Login" onMouseClicked="#login"/>
-            <Text fx:id="result"/>
-            <HBox alignment="CENTER">
-                <Label text="Don't have an account?"/>
-                <Button text="Sign Up" onMouseClicked="#goToSignUpPage"/>
+            <Button text="Login" onMouseClicked="#login" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Text fx:id="result" style="-fx-text-fill: #f6f6f8; -fx-font-size: 13pt;-fx-pref-height: 40px; -fx-pref-width: 300px;">
+                <font>
+                    <Font size="14"/>
+                </font>
+            </Text>
+            <HBox alignment="CENTER" spacing="20">
+                <Label text="Don't have an account?" textFill="azure"/>
+                <Button text="Sign Up" onMouseClicked="#goToSignUpPage" textFill="black"
+                        style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
             </HBox>
         </VBox>
     </center>
 
     <bottom>
         <HBox alignment="CENTER">
-            <Button text="Back" fx:id="backLogout" onMouseClicked="#goBackLogout"/>
+            <Button text="Back" fx:id="backLogout" onMouseClicked="#goBackLogout" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <padding>
+                <Insets bottom="15.0" left="250.0" right="250.0" top="15.0" />
+            </padding>
         </HBox>
     </bottom>
 

@@ -6,9 +6,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import java.net.URL?>
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sample.fxml.AccountSettingPage"
-            prefHeight="400.0" prefWidth="600.0" >
+            fx:controller="sample.view.AccountSettingPage"
+            prefHeight="549.0" prefWidth="800.0" style="-fx-background-color: #261e7d;">
 
-</AnchorPane>
+
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+            <Button text="Change Password" onMouseClicked="#goToChangePassword" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Delete Account" onMouseClicked="#deleteAccount" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Back" onMouseClicked="#goBack" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+        </VBox>
+    </center>
+
+    <stylesheets>
+        <URL value="@../css/alert_style.css"/>
+    </stylesheets>
+
+</BorderPane>

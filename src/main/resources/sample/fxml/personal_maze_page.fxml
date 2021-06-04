@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sample.fxml.PersonalMazePage"
-            prefHeight="400.0" prefWidth="600.0" >
+<?import javafx.geometry.Insets?>
 
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="sample.view.PersonalMazePage"
+            prefHeight="549.0" prefWidth="800.0" style="-fx-background-color: #261e7d;">
+
+
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+            <Button text="Map 1" onMouseClicked="#selectMap1" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Map 2" onMouseClicked="#selectMap2" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Map 3" onMouseClicked="#selectMap3" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Map 4" onMouseClicked="#selectMap4" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+            <Button text="Map 5" onMouseClicked="#selectMap5" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER">
+            <Button alignment="CENTER" text="Back" onMouseClicked="#goBack" textFill="black"
+                    style="-fx-background-color: #e2b44d; -fx-pref-height: 30px;"/>
+                <padding>
+                    <Insets bottom="15.0" left="250.0" right="250.0" top="15.0" />
+                </padding>
+        </HBox>
+    </bottom>
+
+</BorderPane>
